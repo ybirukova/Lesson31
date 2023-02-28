@@ -70,8 +70,8 @@ class DialView @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
-                offColor = getColor(R.styleable.DialCounterView_offColor, Color.GRAY)
-                onColor = getColor(R.styleable.DialCounterView_onColor, Color.GREEN)
+                offColor = getColor(R.styleable.DialView_offColor, Color.GRAY)
+                onColor = getColor(R.styleable.DialView_onColor, Color.GREEN)
             } finally {
                 recycle()
             }

@@ -12,7 +12,9 @@ class DialCounterView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     private var counter: Int = 0
+    var counterState: String = CounterStates.INCREMENT.attrValue
     private var radius = 0.0f
+    private var startRadius = 0.0f
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         textAlign = Paint.Align.CENTER
@@ -21,39 +23,61 @@ class DialCounterView @JvmOverloads constructor(
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        radius = (Integer.min(w, h) / 2.0 * 0.8).toFloat()
+        radius = (Integer.min(w, h) / 2.2 * 0.8).toFloat()
+        startRadius = radius
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+
         when (counter) {
-            in 0..9 -> paint.color = Color.GREEN
-            10 -> {
-                radius = radius + 10.0f
-                paint.color = Color.YELLOW
+            in -100..-1 -> {
+                paint.color = Color.LTGRAY
+                radius = startRadius - 20.0f
             }
-            in 10..19 -> paint.color = Color.YELLOW
-            20 -> {
-                radius = radius + 10.0f
-                paint.color = Color.RED
+            in 0..9 -> {
+                radius = startRadius
+                paint.color = Color.CYAN
             }
-            in 20..100 -> paint.color = Color.RED
+            in 10..19 -> {
+                radius = startRadius + 20.0f
+                paint.color = Color.MAGENTA
+            }
+            in 20..100 -> {
+                radius = startRadius + 40.0f
+                paint.color = Color.BLUE
+            }
         }
 
         canvas.drawCircle((width / 2).toFloat(), (height / 2).toFloat(), radius, paint)
 
         paint.color = Color.BLACK
-
         canvas.drawText(counter.toString(), (width / 2).toFloat(), (height / 2).toFloat(), paint)
     }
 
     init {
         isClickable = true
+
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.DialCounterView,
+            0, 0
+        ).apply {
+            try {
+                counterState = getString(R.styleable.DialCounterView_counterState).toString()
+            } finally {
+                recycle()
+            }
+        }
     }
 
     override fun performClick(): Boolean {
         if (super.performClick()) return true
-        counter = ++counter
+        counter = if (counterState == CounterStates.INCREMENT.attrValue) {
+            ++counter
+        } else {
+            --counter
+        }
 
         invalidate()
         return true
