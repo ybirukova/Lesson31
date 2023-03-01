@@ -22,6 +22,22 @@ class DialCounterView @JvmOverloads constructor(
         typeface = Typeface.create("", Typeface.BOLD)
     }
 
+    init {
+        isClickable = true
+
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.DialCounterView,
+            0, 0
+        ).apply {
+            try {
+                counterState = getString(R.styleable.DialCounterView_counterState).toString()
+            } finally {
+                recycle()
+            }
+        }
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         radius = (Integer.min(w, h) / 2.2 * 0.8).toFloat()
         startRadius = radius
@@ -53,22 +69,6 @@ class DialCounterView @JvmOverloads constructor(
 
         paint.color = Color.BLACK
         canvas.drawText(counter.toString(), (width / 2).toFloat(), (height / 2).toFloat(), paint)
-    }
-
-    init {
-        isClickable = true
-
-        context.theme.obtainStyledAttributes(
-            attrs,
-            R.styleable.DialCounterView,
-            0, 0
-        ).apply {
-            try {
-                counterState = getString(R.styleable.DialCounterView_counterState).toString()
-            } finally {
-                recycle()
-            }
-        }
     }
 
     override fun performClick(): Boolean {
