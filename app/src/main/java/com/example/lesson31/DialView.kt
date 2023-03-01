@@ -31,6 +31,24 @@ class DialView @JvmOverloads constructor(
         typeface = Typeface.create("", Typeface.BOLD)
     }
 
+    init {
+        isClickable = true
+
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.DialCounterView,
+            0, 0
+        ).apply {
+            try {
+                offColor = getColor(R.styleable.DialView_offColor, Color.GRAY)
+                onColor = getColor(R.styleable.DialView_onColor, Color.GREEN)
+            } finally {
+                recycle()
+            }
+
+        }
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         radius = (min(w, h) / 2.0 * 0.8).toFloat()
     }
@@ -58,24 +76,6 @@ class DialView @JvmOverloads constructor(
             pointPosition.computeXYForSpeed(i, labelRadius)
             val label = resources.getString(i.label)
             canvas.drawText(label, pointPosition.x, pointPosition.y, paint)
-        }
-    }
-
-    init {
-        isClickable = true
-
-        context.theme.obtainStyledAttributes(
-            attrs,
-            R.styleable.DialCounterView,
-            0, 0
-        ).apply {
-            try {
-                offColor = getColor(R.styleable.DialCounterView_offColor, Color.GRAY)
-                onColor = getColor(R.styleable.DialCounterView_onColor, Color.GREEN)
-            } finally {
-                recycle()
-            }
-
         }
     }
 

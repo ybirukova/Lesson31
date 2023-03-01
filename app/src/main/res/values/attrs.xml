@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="DialCounterView">
+    <declare-styleable name="DialView">
         <attr name="offColor" format="color" />
         <attr name="onColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="DialCounterView">
+        <attr name="counterState" format="string" />
     </declare-styleable>
 </resources>
