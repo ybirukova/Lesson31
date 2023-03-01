@@ -6,7 +6,6 @@ import com.example.lesson31.databinding.ActivityMainCounterBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private var counterStates = CounterStates.INCREMENT
     private lateinit var binding: ActivityMainCounterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,12 +13,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainCounterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        var counterStates = CounterStates.INCREMENT
         val button = binding.buttonToChangeCounter
-        button.text = counterStates.next().buttonValue
+        button.text = counterStates.switch().buttonValue
 
         button.setOnClickListener {
-            counterStates = counterStates.next()
-            button.text = counterStates.next().buttonValue
+            counterStates = counterStates.switch()
+            button.text = counterStates.switch().buttonValue
             binding.counter.counterState = counterStates.attrValue
         }
     }
